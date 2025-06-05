@@ -8,3 +8,15 @@ Interactive use = Script is run by a logged-in user from a visible shell like Po
 Uses CMDlets properly = Uses built-in cmdlets (Get-Process, Set-Service, Export-Csv, etc.) without invoking raw .NET or Win32 APIs unless necessary.
 Minimal network activity = Rarely makes web requests unless for updates or automation (e.g., downloading a CSV).
 
+| Category                       | Benign Indicator                                                                              | Explanation                                                                                                     |
+| ------------------------------ | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Script Source**              | Digitally signed, local, or internal scripts                                                  | Scripts from trusted sources (.ps1 files stored internally or in Git repos with known maintainers).             |
+| **Execution Context**          | Interactive shell, terminal, or ISE                                                           | Used by logged-in users with visible terminals like `powershell.exe`, `pwsh.exe`, or the ISE.                   |
+| **Cmdlet Usage**               | Uses standard administrative cmdlets                                                          | Examples: `Get-Process`, `Get-Service`, `Restart-Computer`, `Export-Csv`, `Import-Module`, `Set-TimeZone`.      |
+| **No Obfuscation**             | Clear code with readable variable names and strings                                           | No encoding, `-join`, `FromBase64String`, or dynamic string manipulation.                                       |
+| **Expected Scripting Style**   | Uses `param()`, functions, logging, and error handling                                        | Legitimate scripts often include logging (`Write-Verbose`, `Write-Log`), structured functions, and `try/catch`. |
+| **Execution Policy Respect**   | Does not bypass or force policy change                                                        | Avoids `-ExecutionPolicy Bypass` unless part of a legitimate admin deployment scenario (e.g., SCCM).            |
+| **No External Downloads**      | Doesn’t reach out to the internet unless part of package management (e.g. PowerShell Gallery) | Benign use may include `Install-Module` from PSGallery, but not from raw IPs or sketchy domains.                |
+| **Limited File System Impact** | Avoids writing to autostart locations or modifying registry without purpose                   | Example: Creating logs in temp or writing structured outputs to files.                                          |
+| **No Raw .NET Abuse**          | Relies on cmdlets, not direct .NET class instantiation                                        | Uses `Test-NetConnection` instead of `[System.Net.Sockets.TcpClient]`.                                          |
+
