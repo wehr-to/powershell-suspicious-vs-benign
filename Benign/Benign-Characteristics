@@ -1,0 +1,10 @@
+Signed Scripts = Executed scripts are digitally signed and from a trusted source.
+Verbose/Readable Code = Clear variable names, use of Write-Output, Write-Verbose, etc.
+Common cmdlets = Usage of cmdlets like Get-Service, Set-ExecutionPolicy, Get-EventLog, Start-Process in expected ways.
+Standard paths = Executables/scripts run from C:\Windows\System32, Program Files, or user profile folders.
+No Obfuscation = 	Code is written plainly without encoding, string splitting, or variable manipulation to hide intent.
+Run in Console Host = Executed from powershell.exe or pwsh.exe directly, not via wscript.exe, mshta.exe, etc.
+Interactive use = Script is run by a logged-in user from a visible shell like PowerShell ISE, VSCode, or terminal.
+Uses CMDlets properly = Uses built-in cmdlets (Get-Process, Set-Service, Export-Csv, etc.) without invoking raw .NET or Win32 APIs unless necessary.
+Minimal network activity = 	Rarely makes web requests unless for updates or automation (e.g., downloading a CSV).
+
