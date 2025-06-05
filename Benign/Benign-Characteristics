@@ -20,3 +20,8 @@ Minimal network activity = Rarely makes web requests unless for updates or autom
 | **Limited File System Impact** | Avoids writing to autostart locations or modifying registry without purpose                   | Example: Creating logs in temp or writing structured outputs to files.                                          |
 | **No Raw .NET Abuse**          | Relies on cmdlets, not direct .NET class instantiation                                        | Uses `Test-NetConnection` instead of `[System.Net.Sockets.TcpClient]`.                                          |
 
+Real world benign examples: 
+Get-EventLog -LogName Security -Newest 50
+Restart-Service -Name 'Spooler'
+Export-Csv -Path "C:\Reports\users.csv"
+Start-Process notepad.exe
